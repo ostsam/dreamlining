@@ -10,10 +10,18 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01M1A46R7SR4NP34QB160EFY0H",
-  "last_event_id": "ev_01M1A4D7KNSG9QHJCX88VKKDHX",
+  "last_event_id": "ev_01M1A590WG6S9V2WM2M2BN4RV1",
   "last_status_changed_at": "2026-08-30T20:05:09Z",
   "priority": "high",
-  "relationships_out": [],
+  "relationships_out": [
+    {
+      "created_at": "2026-08-30T20:20:19Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "roadmap membership; existing initiation gate",
+      "target_task_id": "task_01M1A4PGFTMCP93GZ1YHE6AXRR",
+      "type": "related_to"
+    }
+  ],
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "DREAM-1",
@@ -21,6 +29,6 @@
   "tags": null,
   "title": "Initiate Dreamlining participant UX",
   "type": "task",
-  "updated_at": "2026-08-30T20:05:09Z",
+  "updated_at": "2026-08-30T20:20:19Z",
   "urgency": null
 }

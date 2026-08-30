@@ -1,0 +1,81 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 0,
+  "complexity": "high",
+  "created_at": "2026-08-30T20:22:58Z",
+  "created_by": "agent:codex-board-impl",
+  "custom_fields": {},
+  "description": "CONTRACT-GATED BUILD TASK: keep in backlog and do not plan or implement until approved T06 is done. Reconcile this provisional scope against SPEC.md, EVALUATION.md, BUILDPLAN.md, DESIGN.md, and the binding prototype before moving to in_planning; carry final AC IDs and the harness hook into the plan. Outcome/why: converge validated product lanes into a recoverable, observable release candidate and repeatable event operation without declaring production readiness prematurely. Outputs: verified use of Dreamlining origin https://github.com/ostsam/dreamlining.git with clean main upstream and approved PR/CI policy; proof no operation targets parent ostsam/vapight-kampff; contracted hosting/data environments; migrations; backups/restore; secrets/rotation; domain/TLS; capacity; health/alerts; rollback; retention/deletion; facilitator, incident, event-fallback runbooks; and immutable RC provenance. Completion evidence: CI and deployment policy pass, restore/rollback and alert drills succeed, environment/version/config provenance is recorded, runbooks are executable, and the RC is deployed production-like but explicitly not yet production-ready. Human checkpoint: external account, DNS, secret, or cost actions use named operator checkpoints. Contract/AC lineage: cite release, operations, resilience, privacy, capacity, and repository-safety AC IDs.",
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01M1A5DVW695EKW6K43CNQB677",
+  "last_event_id": "ev_01M1A5F2P103FH68AMMTJF7P50",
+  "last_status_changed_at": "2026-08-30T20:22:58Z",
+  "priority": "critical",
+  "relationships_out": [
+    {
+      "created_at": "2026-08-30T20:22:58Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "roadmap membership",
+      "target_task_id": "task_01M1A4PGFTMCP93GZ1YHE6AXRR",
+      "type": "related_to"
+    },
+    {
+      "created_at": "2026-08-30T20:23:34Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5BG5GYTRGW9Z9084AE9QP",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:34Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5DTTQACQHPGBN6G9E5HRP",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:34Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5DV369Z29VXTCHEHN413S",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:34Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5DVBH0172HSB5E8RQA62Y",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:35Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5DVKPC6SPX3A9TJ6ZK0F1",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:38Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "contract gate: approved T06 required before planning or implementation",
+      "target_task_id": "task_01M1A5A6SCK9V8941ANHGKC5RA",
+      "type": "depends_on"
+    }
+  ],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "DREAM-28",
+  "status": "backlog",
+  "tags": [
+    "release",
+    "infrastructure",
+    "runbooks",
+    "wave-9"
+  ],
+  "title": "Prepare production-like release infrastructure and event runbooks",
+  "type": "task",
+  "updated_at": "2026-08-30T20:23:38Z",
+  "urgency": null
+}

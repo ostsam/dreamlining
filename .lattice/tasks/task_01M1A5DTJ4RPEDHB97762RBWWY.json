@@ -1,0 +1,52 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 0,
+  "complexity": "medium",
+  "created_at": "2026-08-30T20:22:57Z",
+  "created_by": "agent:codex-board-impl",
+  "custom_fields": {},
+  "description": "CONTRACT-GATED BUILD TASK: keep in backlog and do not plan or implement until approved T06 is done. Reconcile this provisional scope against SPEC.md, EVALUATION.md, BUILDPLAN.md, DESIGN.md, and the binding prototype before moving to in_planning; carry final AC IDs and the harness hook into the plan. Outcome/why: ensure an event can continue through realistic network, browser, provider, and process failures without silent loss or duplicate effects. Outputs: recovery for network/tab/channel loss; duplicate and stale submissions; autosave conflicts; retries/restarts; notification/export partial failure; and facilitator advance while editing, with idempotent reconciliation, actionable UI, telemetry, and documented unrecoverable cases. Completion evidence: deterministic fault-injection tests cover each failure at critical transitions, verify state convergence and user guidance, and prove observability without content leakage. Human checkpoint: unrecoverable behavior that changes the contract requires operator/client decision. Contract/AC lineage: cite recovery, idempotency, conflict, partial-failure, telemetry, and UX AC IDs; establish semantics consumed by T25/T26.",
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01M1A5DTJ4RPEDHB97762RBWWY",
+  "last_event_id": "ev_01M1A5F20W407RC1TXQ7EHG0F0",
+  "last_status_changed_at": "2026-08-30T20:22:57Z",
+  "priority": "high",
+  "relationships_out": [
+    {
+      "created_at": "2026-08-30T20:22:57Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "roadmap membership",
+      "target_task_id": "task_01M1A4PGFTMCP93GZ1YHE6AXRR",
+      "type": "related_to"
+    },
+    {
+      "created_at": "2026-08-30T20:23:33Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5CEJ3JWT6TPV6NTEVCR7Q",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:37Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "contract gate: approved T06 required before planning or implementation",
+      "target_task_id": "task_01M1A5A6SCK9V8941ANHGKC5RA",
+      "type": "depends_on"
+    }
+  ],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "DREAM-23",
+  "status": "backlog",
+  "tags": [
+    "recovery",
+    "resilience",
+    "wave-8"
+  ],
+  "title": "Harden reconnect, offline, conflict, and partial-failure recovery",
+  "type": "task",
+  "updated_at": "2026-08-30T20:23:37Z",
+  "urgency": null
+}

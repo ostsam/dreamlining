@@ -1,0 +1,52 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 0,
+  "complexity": "high",
+  "created_at": "2026-08-30T20:21:40Z",
+  "created_by": "agent:codex-board-impl",
+  "custom_fields": {},
+  "description": "CONTRACT-GATED BUILD TASK: keep in backlog and do not plan or implement until approved T06 is done. Reconcile this provisional scope against SPEC.md, EVALUATION.md, BUILDPLAN.md, DESIGN.md, and the binding prototype before moving to in_planning; carry final AC IDs and the harness hook into the plan. Outcome/why: make session and phase behavior authoritative, exhaustive, and auditable before parallel role features build on it. Outputs: contracted configuration; lobby/open/closed and event-phase lifecycle; readiness/completion; idempotent transitions; editability rules while phases advance; expiry/archive; deterministic audit history; and one canonical state-machine API. Completion evidence: exhaustive transition-table tests cover valid, invalid, duplicate, stale, concurrent, expired, archived, and recovery cases and pass the approved harness. Human checkpoint: only for a contract-level lifecycle ambiguity. Contract/AC lineage: cite phase, readiness, audit, expiry, recovery, and facilitator-authority AC IDs; this ticket owns the central lifecycle primitive.",
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01M1A5BFMP23G8MSS92JQ3R622",
+  "last_event_id": "ev_01M1A5F0EDZ3VX0HKFRZ4D5WND",
+  "last_status_changed_at": "2026-08-30T20:21:40Z",
+  "priority": "high",
+  "relationships_out": [
+    {
+      "created_at": "2026-08-30T20:21:40Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "roadmap membership",
+      "target_task_id": "task_01M1A4PGFTMCP93GZ1YHE6AXRR",
+      "type": "related_to"
+    },
+    {
+      "created_at": "2026-08-30T20:23:30Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "human-use gate: validated walking skeleton",
+      "target_task_id": "task_01M1A5BFC95WD5ZT4BF83Y8QEH",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:36Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "contract gate: approved T06 required before planning or implementation",
+      "target_task_id": "task_01M1A5A6SCK9V8941ANHGKC5RA",
+      "type": "depends_on"
+    }
+  ],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "DREAM-11",
+  "status": "backlog",
+  "tags": [
+    "session",
+    "state-machine",
+    "wave-4"
+  ],
+  "title": "Complete the session and event-phase lifecycle",
+  "type": "task",
+  "updated_at": "2026-08-30T20:23:36Z",
+  "urgency": null
+}

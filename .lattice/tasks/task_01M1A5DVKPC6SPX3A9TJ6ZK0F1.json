@@ -1,0 +1,60 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 0,
+  "complexity": "high",
+  "created_at": "2026-08-30T20:22:58Z",
+  "created_by": "agent:codex-board-impl",
+  "custom_fields": {},
+  "description": "CONTRACT-GATED BUILD TASK: keep in backlog and do not plan or implement until approved T06 is done. Reconcile this provisional scope against SPEC.md, EVALUATION.md, BUILDPLAN.md, DESIGN.md, and the binding prototype before moving to in_planning; carry final AC IDs and the harness hook into the plan. Outcome/why: prove the selected architecture sustains the contracted event envelope and fairness invariants under bursts, long connections, and recovery storms. Outputs: reproducible load/soak scripts and results for capacity, transition bursts, autosave/submission/assignment races, long connections, reconnect storms, duplicates, provider limits, and degradation; fixes; and a capacity/cost envelope. Completion evidence: contracted concurrency and duration thresholds pass, fairness/state invariants hold, resource/provider ceilings and graceful degradation are documented, failures are remediated and rerun, and results include version/config provenance. Human checkpoint: cost/capacity tradeoffs beyond the approved envelope require client/operator decision. Contract/AC lineage: cite performance, realtime, concurrency, fairness, recovery, provider-limit, and cost-envelope AC IDs.",
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01M1A5DVKPC6SPX3A9TJ6ZK0F1",
+  "last_event_id": "ev_01M1A5F2HSERKKSCTCF9DHR8WJ",
+  "last_status_changed_at": "2026-08-30T20:22:58Z",
+  "priority": "critical",
+  "relationships_out": [
+    {
+      "created_at": "2026-08-30T20:22:58Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "roadmap membership",
+      "target_task_id": "task_01M1A4PGFTMCP93GZ1YHE6AXRR",
+      "type": "related_to"
+    },
+    {
+      "created_at": "2026-08-30T20:23:34Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5CEJ3JWT6TPV6NTEVCR7Q",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:34Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5DTJ4RPEDHB97762RBWWY",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:38Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "contract gate: approved T06 required before planning or implementation",
+      "target_task_id": "task_01M1A5A6SCK9V8941ANHGKC5RA",
+      "type": "depends_on"
+    }
+  ],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "DREAM-27",
+  "status": "backlog",
+  "tags": [
+    "load",
+    "concurrency",
+    "soak",
+    "wave-8"
+  ],
+  "title": "Run load, concurrency, and realtime soak validation",
+  "type": "task",
+  "updated_at": "2026-08-30T20:23:38Z",
+  "urgency": null
+}

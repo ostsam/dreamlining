@@ -1,0 +1,59 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 0,
+  "complexity": "high",
+  "created_at": "2026-08-30T20:22:10Z",
+  "created_by": "agent:codex-board-impl",
+  "custom_fields": {},
+  "description": "CONTRACT-GATED BUILD TASK: keep in backlog and do not plan or implement until approved T06 is done. Reconcile this provisional scope against SPEC.md, EVALUATION.md, BUILDPLAN.md, DESIGN.md, and the binding prototype before moving to in_planning; carry final AC IDs and the harness hook into the plan. Outcome/why: turn fair assignments into focused, useful, privacy-safe human contribution rather than an unstructured comment stream. Outputs: one contracted assignment/person/dream at a time; response types such as idea, resource/introduction, question, and offer to help as approved; draft/send/edit; skip/rematch explanation; progress, empty, and exhausted states; accessible receipt; atomic coverage updates; and blocker/feedback privacy enforcement. Completion evidence: isolated feature and browser tests cover composing, saving, sending, editing, retrying, duplicate submission, skip/rematch, atomic race behavior, accessibility, and unauthorized access. Human checkpoint: material response-model or privacy changes return to the approved contract. Contract/AC lineage: cite assigned-feedback, collaboration, coverage, privacy, accessibility, and fairness AC IDs; consume T13 and T15 without redefining routing.",
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01M1A5CD84795ME29TZPARAEP2",
+  "last_event_id": "ev_01M1A5F17SPTW46KFD06RC9B5W",
+  "last_status_changed_at": "2026-08-30T20:22:10Z",
+  "priority": "high",
+  "relationships_out": [
+    {
+      "created_at": "2026-08-30T20:22:11Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "roadmap membership",
+      "target_task_id": "task_01M1A4PGFTMCP93GZ1YHE6AXRR",
+      "type": "related_to"
+    },
+    {
+      "created_at": "2026-08-30T20:23:31Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5BGDYZNYWBKGWHD8DR3C8",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:31Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite",
+      "target_task_id": "task_01M1A5BGYN3XYTY82H8E3SQ7RS",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:36Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "contract gate: approved T06 required before planning or implementation",
+      "target_task_id": "task_01M1A5A6SCK9V8941ANHGKC5RA",
+      "type": "depends_on"
+    }
+  ],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "DREAM-17",
+  "status": "backlog",
+  "tags": [
+    "feedback",
+    "collaboration",
+    "wave-6"
+  ],
+  "title": "Build structured assigned-feedback and collaboration UX",
+  "type": "task",
+  "updated_at": "2026-08-30T20:23:36Z",
+  "urgency": null
+}

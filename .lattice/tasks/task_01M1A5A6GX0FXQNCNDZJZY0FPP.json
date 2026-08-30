@@ -1,0 +1,53 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 0,
+  "complexity": "high",
+  "created_at": "2026-08-30T20:20:58Z",
+  "created_by": "agent:codex-board-impl",
+  "custom_fields": {},
+  "description": "Outcome/why: translate the approved product and binding prototype into an executable build contract through Tone architect dialogue, so future agents can work cold without choosing foundational behavior ad hoc. Outputs: root EVALUATION.md, SPEC.md, and BUILDPLAN.md; AC classifications as autonomous, operator-assisted, external-oracle, or felt; hermetic parallel <=60s test and slower test:full harness contracts; named human checkpoints; explicit technical options/tradeoffs and client decisions for stack, data, identity/auth, realtime, hosting, observability, analytics, notifications, and monitoring; every persisted field mapped to writer/reader; privacy and fairness guardrails; starter audit as DONE/PARTIAL/MISSING; and a deployable walking-skeleton sequence. Completion evidence: adversarial spec/codebase review is recorded, contradictions amend upstream artifacts, and no vendor is selected without client decision. Human checkpoint: architecture choices and tradeoffs require client dialogue. Contract/AC lineage: every DREAM-1 story AC remains stable and is mapped into evaluation, specification, and plan.",
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01M1A5A6GX0FXQNCNDZJZY0FPP",
+  "last_event_id": "ev_01M1A5ET5XD6S94SH6241A05C8",
+  "last_status_changed_at": "2026-08-30T20:20:58Z",
+  "priority": "critical",
+  "relationships_out": [
+    {
+      "created_at": "2026-08-30T20:20:58Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "roadmap membership",
+      "target_task_id": "task_01M1A4PGFTMCP93GZ1YHE6AXRR",
+      "type": "related_to"
+    },
+    {
+      "created_at": "2026-08-30T20:23:29Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite: approved binding prototype",
+      "target_task_id": "task_01M1A5A608D23J9TTQ4CDCZ9VE",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:29Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite: verified repository protocol",
+      "target_task_id": "task_01M1A5A68KCTYFTFSM1SWTX1M9",
+      "type": "depends_on"
+    }
+  ],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "DREAM-6",
+  "status": "backlog",
+  "tags": [
+    "tone",
+    "architecture",
+    "contract",
+    "wave-2"
+  ],
+  "title": "Codify the Dreamlining evaluation, specification, and build plan",
+  "type": "task",
+  "updated_at": "2026-08-30T20:23:29Z",
+  "urgency": null
+}

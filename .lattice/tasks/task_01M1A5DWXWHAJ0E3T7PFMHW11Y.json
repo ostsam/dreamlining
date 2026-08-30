@@ -1,0 +1,53 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 0,
+  "complexity": "high",
+  "created_at": "2026-08-30T20:22:59Z",
+  "created_by": "agent:codex-board-impl",
+  "custom_fields": {},
+  "description": "CONTRACT-GATED BUILD TASK: keep in backlog and do not plan or implement until approved T06 is done. Reconcile this provisional scope against SPEC.md, EVALUATION.md, BUILDPLAN.md, DESIGN.md, and the binding prototype before moving to in_planning; carry final AC IDs and the harness hook into the plan. Outcome/why: provide an independent terminal verdict, perform the authorized production deployment, and leave durable learning and next work only after the contract is truly satisfied. Outputs: fresh result-validator execution of the approved validation plan with per-AC pass/drift/risk/operator-smoke report; immutable deployment and post-deploy smoke, rollback readiness, and monitoring evidence; human go; Tone/Lattice retrospective; timeless lessons in LESSONS.md or CLAUDE.md; run-specific ledger; next roadmap; and run-state closeout. Completion evidence: missing evidence blocks the verdict, all required ACs pass, explicit human go is recorded before deploy, post-deploy checks and monitoring pass, rollback remains available, and no required work is left open. Human checkpoint: production go/deploy and any residual-risk acceptance require the named human approver. Contract/AC lineage: execute the approved EVALUATION.md exactly; terminal validation must be fresh and independent from builders.",
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01M1A5DWXWHAJ0E3T7PFMHW11Y",
+  "last_event_id": "ev_01M1A5F36RKQX4ATMNF428HFJP",
+  "last_status_changed_at": "2026-08-30T20:22:59Z",
+  "priority": "critical",
+  "relationships_out": [
+    {
+      "created_at": "2026-08-30T20:22:59Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "roadmap membership",
+      "target_task_id": "task_01M1A4PGFTMCP93GZ1YHE6AXRR",
+      "type": "related_to"
+    },
+    {
+      "created_at": "2026-08-30T20:23:35Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "functional prerequisite: remediated launch candidate",
+      "target_task_id": "task_01M1A5DWNEMPTHK12BNJA5J782",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-08-30T20:23:38Z",
+      "created_by": "agent:codex-board-impl",
+      "note": "contract gate: approved T06 required before planning or implementation",
+      "target_task_id": "task_01M1A5A6SCK9V8941ANHGKC5RA",
+      "type": "depends_on"
+    }
+  ],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "DREAM-32",
+  "status": "backlog",
+  "tags": [
+    "validation",
+    "deployment",
+    "retro",
+    "wave-9"
+  ],
+  "title": "Terminally validate, deploy, and close the Dreamlining run",
+  "type": "task",
+  "updated_at": "2026-08-30T20:23:38Z",
+  "urgency": null
+}
