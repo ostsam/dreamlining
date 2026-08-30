@@ -38,8 +38,9 @@ button { cursor: pointer; }
 button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 button:disabled { cursor: not-allowed; opacity: .52; }
 
-.prototype-bar { position: fixed; right: 1rem; bottom: 1rem; z-index: 10; display: inline-flex; align-items: center; gap: .4rem; padding: .42rem .66rem; color: oklch(1 0 0); background: var(--ink); border: 1px solid oklch(1 0 0 / .14); border-radius: 999px; box-shadow: var(--shadow-soft); font-size: .7rem; font-weight: 650; letter-spacing: .035em; }
+.prototype-bar { display: flex; align-items: center; justify-content: center; width: max-content; max-width: calc(100% - 1.5rem); margin: .75rem auto 0; padding: .42rem .66rem; color: oklch(1 0 0); background: var(--ink); border: 1px solid oklch(1 0 0 / .14); border-radius: 999px; box-shadow: var(--shadow-soft); font-size: .7rem; font-weight: 650; letter-spacing: .035em; }
 .prototype-bar strong { color: oklch(0.84 0.15 78); }
+.prototype-bar span:last-child { display: none; }
 .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
 .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 76px; padding: 1.25rem 0 1rem; border-bottom: 1px solid var(--line); }
 .brand { display: inline-flex; align-items: center; gap: .6rem; color: var(--ink); font-size: 1.2rem; font-weight: 780; letter-spacing: -.035em; }
@@ -169,7 +170,7 @@ label.check input { margin-top: .18rem; accent-color: var(--primary); }
 }
 @media (max-width: 700px) {
   .wrap { width: min(100% - 24px, 620px); }
-  .prototype-bar { right: .75rem; bottom: .75rem; }
+  .prototype-bar { margin-top: .6rem; }
   .top { align-items: flex-start; flex-direction: column; min-height: auto; padding: 1rem 0 .85rem; }
   .nav { flex-wrap: wrap; width: 100%; }
   .nav a { flex: 1 1 auto; }
@@ -185,10 +186,10 @@ label.check input { margin-top: .18rem; accent-color: var(--primary); }
   .rail { position: static; }
   .row { align-items: flex-start; }
   .card.plum > .row { flex-wrap: wrap; }
-  .phase-rail { align-items: flex-start; overflow-x: auto; padding: .8rem; }
-  .phase-rail::before { right: 1rem; left: 1.35rem; }
-  .phase-step { padding-right: .65rem; }
-  .phase-trail { margin-left: .35rem; }
+  .phase-rail { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start; gap: .55rem .25rem; padding: .85rem .65rem .7rem; }
+  .phase-rail::before { top: 2rem; right: 2rem; left: 2rem; }
+  .phase-step { flex-direction: column; gap: .25rem; padding: 0; font-size: .68rem; text-align: center; }
+  .phase-trail { grid-column: 1 / -1; width: 100%; margin: .1rem 0 0; }
   .login-panel { padding: 2rem 0; }
   .login-card h1 { font-size: 2.25rem; }
   .row > .pill { white-space: normal; text-align: right; }
