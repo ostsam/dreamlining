@@ -1,5 +1,22 @@
 @AGENTS.md
 
+## Tone artifacts
+
+These are pointers to the living product-definition corpus. Read them before prototype or architecture work:
+
+- [Product register](PRODUCT.md)
+- [Visual design system](DESIGN.md)
+- [Product philosophy](PHILOSOPHY.md)
+- [Run state](sequence/run-state.md)
+- [Experience contract](sequence/EXPERIENCE.md)
+- [User stories and stable AC IDs](sequence/USER_STORIES.md)
+- [Research dossier](sequence/research/dossier.md)
+- [Prototype take index](prototypes/README.md)
+- [Evaluation contract](EVALUATION.md)
+- [Specification](SPEC.md)
+- [Build plan](BUILDPLAN.md)
+- [Agent worktree protocol](docs/AGENT_WORKTREE_PROTOCOL.md)
+
 ## Lattice
 
 > **MANDATORY: This project has Lattice initialized (`.lattice/` exists). You MUST use Lattice to track all work. Creating tasks, updating statuses, and following the workflow below is not optional — it is a hard requirement. Failure to track work in Lattice is a coordination failure: other agents and humans cannot see, build on, or trust untracked work. If you are about to write code and no Lattice task exists for it, stop and create one first.**

@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin sign in — Dreamlining prototype</title><link rel="stylesheet" href="prototype.css"></head>
+<body>
+<div class="prototype-bar"><span><strong>PROTOTYPE</strong> · not connected to real data</span><span>Admin arrival</span></div>
+<div class="wrap login-shell"><main class="login-panel"><div class="brand">dreamlining <span class="muted">/ admin</span></div><section class="card plum login-card"><p class="eyebrow plum-label">Trusted host</p><h1>Open the room.</h1><p class="lede">Use the event password to create a session, make its QR code, and guide the night. Participants never see this space.</p><form onsubmit="event.preventDefault();showLoginState()" style="margin-top:1.35rem"><label class="small" for="adminPassword">Admin password</label><input id="adminPassword" type="password" autocomplete="current-password" placeholder="Enter the shared event password" style="margin-top:.4rem"><button class="button plum" type="submit" style="margin-top:.8rem;width:100%">Continue to control room</button><div class="login-help"><span aria-hidden="true">▣</span><span>This password stays on the server. Your admin session expires automatically.</span></div><div id="loginState" class="flash" role="status"></div></form></section><p class="small muted login-foot">Having trouble? Ask the person running tonight’s event for the password.</p></main></div>
+<script>function showLoginState(){const e=document.getElementById('loginState');e.textContent='Prototype sign-in accepted. Opening the control room…';e.classList.add('show')}</script>
+</body></html>
