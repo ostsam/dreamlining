@@ -15,6 +15,7 @@ This repository uses a local, ignored Lattice board and Git worktrees for isolat
 
 - Never run `lattice init` from a worktree. A worktree must use the existing primary board through `LATTICE_ROOT`.
 - Worktrees live beside the primary checkout, for example `../dreamlining-dream-5`, never inside it.
+- Do not use `lattice next` or `lattice next --claim` in this repository. Lattice CLI 0.2.0 does not enforce `depends_on` when ranking the next task. Use `bun scripts/lattice-ready.mjs --json` to inspect ready work and `bun scripts/lattice-ready.mjs --claim --actor agent:<id> --json` to claim it atomically into `in_planning`.
 
 ## Starting isolated work
 

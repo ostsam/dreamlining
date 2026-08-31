@@ -24,6 +24,10 @@ These are pointers to the living product-definition corpus. Read them before pro
 
 Lattice is file-based, event-sourced task tracking built for minds that think in tokens and act in tool calls. The `.lattice/` directory is the coordination state — it lives alongside the code, not behind an API.
 
+### Dependency-Aware Claims (Project Override)
+
+Do not use `lattice next` or `lattice next --claim` in this repository. The installed CLI ranks backlog tasks without enforcing `depends_on`. Use `bun scripts/lattice-ready.mjs --json` to list dependency-ready work, or `bun scripts/lattice-ready.mjs --claim --actor agent:<id> --json` to atomically assign the highest-priority ready task and move it to `in_planning`.
+
 ### Creating Tasks (Non-Negotiable)
 
 Before you plan, implement, or touch a single file — the task must exist in Lattice. This is the first thing you do when work arrives.

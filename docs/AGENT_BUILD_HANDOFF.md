@@ -6,7 +6,7 @@ The product, binding prototype, technical contract, evaluation plan, repository 
 
 1. Read `AGENTS.md` and `CLAUDE.md` completely.
 2. Set `LATTICE_ROOT=/Users/so/Documents/projects/dreamlining`; this installed Lattice version expects the project root, not `.lattice/`.
-3. Run `lattice next --actor agent:<id> --claim --json`. The first implementation task must be `DREAM-8`.
+3. Do **not** use `lattice next`: this installed CLI version ranks backlog tasks without enforcing `depends_on`. List dependency-ready work with `bun scripts/lattice-ready.mjs --json`, or atomically claim the highest-priority ready task with `bun scripts/lattice-ready.mjs --claim --actor agent:<id> --json`. The first implementation task must be `DREAM-8`.
 4. Follow `docs/AGENT_WORKTREE_PROTOCOL.md`: one Git branch and sibling worktree per implementation task, one shared absolute Lattice root, no `lattice init` in a worktree, and PR/merge only through the Dreamlining repository.
 5. For work that touches persistence, create/check out a disposable Neon child branch matching the Git branch. Never run provider tests or migrations against the default/production branch.
 
@@ -52,5 +52,6 @@ Gallery and Guided Inbox are non-binding pattern references. They must not becom
 - Neon: linked project/branch, pooled/direct URL shapes, branch policy, and read-only connectivity verified without printing credentials.
 - Prototypes: Impeccable detector clean; desktop/mobile in-app-browser checks show no horizontal overflow or console errors on the binding participant surface.
 - Lattice: 32 tasks, 25 contract-gated implementation tasks, direct DREAM-7 dependency on each, and a healthy event store/graph.
+- Dispatcher: the dependency-aware helper and its synthetic graph test both select DREAM-8 while refusing higher-priority downstream tasks.
 
 The recurring Next.js warning about an ignored parent `package-lock.json` is already assigned to DREAM-8: set `turbopack.root` to this repository without touching the unrelated parent project.
