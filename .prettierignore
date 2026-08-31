@@ -1,0 +1,17 @@
+.next
+node_modules
+artifacts
+public
+prototypes
+AGENTS.md
+CLAUDE.md
+BUILDPLAN.md
+DESIGN.md
+EVALUATION.md
+PHILOSOPHY.md
+PRODUCT.md
+SPEC.md
+sequence
+docs
+scripts/lattice-ready.mjs
+db/migrations/meta

@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dreamlining
 
-## Getting Started
+Dreamlining is a private, browser-based session runner for a facilitated group
+to turn dreams into momentum. The product contract and build sequence live in
+`SPEC.md`, `EVALUATION.md`, and `BUILDPLAN.md`; the implementation begins with
+DREAM-8's shared foundation.
 
-First, run the development server:
+## Local prerequisites
+
+- Node.js 20.19.x or newer compatible Node 20 (see `.node-version`)
+- Bun 1.3.4
+- A disposable, non-default Neon child branch for any database I/O
+
+Install with the frozen lockfile:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install --frozen-lockfile
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment scopes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Application traffic reads only a pooled `DATABASE_URL`. Migrations read the
+direct `DATABASE_URL_UNPOOLED` plus `NEON_BRANCH`; the configured URL pair is
+the source of truth. `APP_ORIGIN`, the
+versioned scrypt `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`, base64
+32-byte `CONTACT_ENCRYPTION_KEY`, and `MAINTENANCE_SECRET` are server-only.
+See `.env.example` for the shape (never commit a real `.env` file).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Neon URLs must use `postgres:` or `postgresql:`, credentials, a database path,
+an `ep-...` host under `.neon.tech`, no fragment, no port or port 5432, and
+exactly `sslmode=require` plus `channel_binding=require`. A `-pooler` endpoint
+is pooled; the same normalized endpoint ID and database name must be present in
+the direct URL.
 
-## Learn More
+The migration guard rejects blank `NEON_BRANCH` values and the labels
+`production`, `main`, `master`, and `default` (case-insensitive), then checks
+the URL pair before Drizzle runs. There is no control-plane lookup.
 
-To learn more about Next.js, take a look at the following resources:
+## Commands
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+bun run dev             # local development server
+bun run build           # production build
+bun run start           # production server
+bun run format:check    # Prettier check
+bun run typecheck       # TypeScript check
+bun run lint            # ESLint
+bun run check           # hermetic <=60s parallel fast shards
+bun run db:generate     # offline schema-only Drizzle generation
+bun run db:migrate      # guarded migration
+bun run test:unit       # foundation primitives
+bun run test:router     # generic harness; DREAM-16 is not applicable here
+bun run test:security   # boundaries/redaction; domain checks are later tasks
+bun run test:full       # production/browser/opt-in database slots
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Raw `drizzle-kit migrate` is unsupported because it bypasses the mandatory
+non-default branch and endpoint-pair guard. `db:generate` intentionally reads
+no database URL, provider metadata, or app secret and makes no network call.
 
-## Deploy on Vercel
+The fast `check` command strips the database/provider/app key set before
+launching children. It records `branchResolution: "not-run"`. Child output is
+redacted and bounded before console forwarding or writing `artifacts/**`;
+artifacts are ignored by Git. Child process trees have a monotonic 60-second
+deadline, bounded termination grace, and deterministic timeout status 124.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The optional provider slot is `skipped` without explicit `DREAM_PROVIDER=neon`;
+with opt-in it runs the same local guard before any database work. The full
+browser slot checks Chromium and WebKit (desktop and iPhone 13 respectively).
+Missing browsers are a failed `browser-missing`
+slot with exit code 2 and:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+bunx playwright install chromium webkit
+```
+
+`DREAM_SKIP_BROWSER=1` is an explicit local escape hatch, but records a
+non-passing skip and exits nonzero. CI installs browsers only in its full-test
+job. Foundation tests deliberately do not claim participant, admin, router,
+contact, or other domain acceptance criteria; those begin with DREAM-9 onward.
+
+## Neon branch workflow
+
+Create a disposable child branch from the linked Neon project before any
+database work, set the two URL variables to its pooled/direct endpoint pair,
+and set `NEON_BRANCH` to its provider name. Review `neon diff` before
+applying migrations. The local `neon.ts` policy expires new non-default
+branches after seven days. Never use the linked default/production branch as a
+test target.
