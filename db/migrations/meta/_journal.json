@@ -1,1 +1,13 @@
-{"version":"7","dialect":"postgresql","entries":[]}
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1788148262407,
+      "tag": "0000_loud_marvex",
+      "breakpoints": true
+    }
+  ]
+}
