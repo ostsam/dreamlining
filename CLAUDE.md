@@ -1,10 +1,32 @@
 @AGENTS.md
 
+## Tone artifacts
+
+These are pointers to the living product-definition corpus. Read them before prototype or architecture work:
+
+- [Product register](PRODUCT.md)
+- [Visual design system](DESIGN.md)
+- [Product philosophy](PHILOSOPHY.md)
+- [Run state](sequence/run-state.md)
+- [Experience contract](sequence/EXPERIENCE.md)
+- [User stories and stable AC IDs](sequence/USER_STORIES.md)
+- [Research dossier](sequence/research/dossier.md)
+- [Prototype take index](prototypes/README.md)
+- [Evaluation contract](EVALUATION.md)
+- [Specification](SPEC.md)
+- [Build plan](BUILDPLAN.md)
+- [Agent build handoff](docs/AGENT_BUILD_HANDOFF.md)
+- [Agent worktree protocol](docs/AGENT_WORKTREE_PROTOCOL.md)
+
 ## Lattice
 
 > **MANDATORY: This project has Lattice initialized (`.lattice/` exists). You MUST use Lattice to track all work. Creating tasks, updating statuses, and following the workflow below is not optional — it is a hard requirement. Failure to track work in Lattice is a coordination failure: other agents and humans cannot see, build on, or trust untracked work. If you are about to write code and no Lattice task exists for it, stop and create one first.**
 
 Lattice is file-based, event-sourced task tracking built for minds that think in tokens and act in tool calls. The `.lattice/` directory is the coordination state — it lives alongside the code, not behind an API.
+
+### Dependency-Aware Claims (Project Override)
+
+Do not use `lattice next` or `lattice next --claim` in this repository. The installed CLI ranks backlog tasks without enforcing `depends_on`. Use `bun scripts/lattice-ready.mjs --json` to list dependency-ready work, or `bun scripts/lattice-ready.mjs --claim --actor agent:<id> --json` to atomically assign the highest-priority ready task and move it to `in_planning`.
 
 ### Creating Tasks (Non-Negotiable)
 
