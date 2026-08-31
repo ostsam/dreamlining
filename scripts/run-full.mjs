@@ -15,11 +15,9 @@ async function record(name, result, extra = {}) {
       ...extra,
     },
     { stdout: result.stdout ?? "", stderr: result.stderr ?? "" },
-    [
-      process.env.DATABASE_URL,
-      process.env.DATABASE_URL_UNPOOLED,
-      process.env.NEON_API_KEY,
-    ].filter(Boolean),
+    [process.env.DATABASE_URL, process.env.DATABASE_URL_UNPOOLED].filter(
+      Boolean,
+    ),
   );
   reports.push({ name, ...result, artifactPath });
   if (result.status === "failed" || result.status === "timeout")
@@ -40,53 +38,13 @@ await record("build", build, { branchResolution: "not-run" });
 const providerOptIn = process.env.DREAM_PROVIDER === "neon";
 if (providerOptIn) {
   try {
-    if (!process.env.DATABASE_URL || !process.env.DATABASE_URL_UNPOOLED)
-      throw new Error("both Neon URLs are required");
-    if (
-      !process.env.NEON_PROJECT_ID ||
-      !process.env.NEON_BRANCH ||
-      !process.env.NEON_API_KEY
-    ) {
-      throw new Error(
-        "NEON_PROJECT_ID, NEON_BRANCH, and NEON_API_KEY are required",
-      );
-    }
-    const {
-      assertNeonEndpointPair,
-      assertNeonUrlPair,
-      parseNeonConnectionUrl,
-    } = await import("../src/config/neon-url.ts");
-    const { resolveNeonBranch } = await import("./neon-provider.mjs");
-    assertNeonUrlPair(
-      process.env.DATABASE_URL,
-      process.env.DATABASE_URL_UNPOOLED,
-    );
-    const pooled = parseNeonConnectionUrl(process.env.DATABASE_URL, "pooled");
-    const direct = parseNeonConnectionUrl(
-      process.env.DATABASE_URL_UNPOOLED,
-      "direct",
-    );
-    const resolved = await resolveNeonBranch({
-      projectId: process.env.NEON_PROJECT_ID,
-      branchName: process.env.NEON_BRANCH,
-      apiKey: process.env.NEON_API_KEY,
-      pooledHost: pooled.host,
-      directHost: direct.host,
-      apiBaseUrl: process.env.NEON_API_BASE_URL,
-    });
-    assertNeonEndpointPair(
-      process.env.DATABASE_URL,
-      process.env.DATABASE_URL_UNPOOLED,
-      {
-        pooled: resolved.pooled,
-        direct: resolved.direct,
-        defaultBranchId: resolved.defaultBranchId,
-      },
-    );
+    const { assertNeonTestBranch } =
+      await import("./assert-neon-test-branch.mjs");
+    assertNeonTestBranch();
     reports.push({
       name: "neon-preflight",
       status: "passed",
-      branchResolution: "provider",
+      branchResolution: "local",
     });
   } catch (error) {
     failures.push("neon-preflight");
@@ -99,7 +57,7 @@ if (providerOptIn) {
   }
 } else {
   reports.push({
-    name: "neon-provider",
+    name: "provider",
     status: "skipped",
     branchResolution: "not-run",
   });
@@ -115,30 +73,25 @@ if (providerOptIn && !failures.includes("neon-preflight")) {
         DATABASE_URL: process.env.DATABASE_URL,
         DATABASE_URL_UNPOOLED: process.env.DATABASE_URL_UNPOOLED,
         NEON_BRANCH: process.env.NEON_BRANCH,
-        NEON_BRANCH_SOURCE: "provider",
-        NEON_PROJECT_ID: process.env.NEON_PROJECT_ID,
-        NEON_API_KEY: process.env.NEON_API_KEY,
-        NEON_API_BASE_URL: process.env.NEON_API_BASE_URL,
       }),
       secrets: [
         process.env.DATABASE_URL,
         process.env.DATABASE_URL_UNPOOLED,
-        process.env.NEON_API_KEY,
       ].filter(Boolean),
       timeoutMs: 60_000,
     },
   );
-  await record("db-migrate", migration, { branchResolution: "provider" });
+  await record("db-migrate", migration, { branchResolution: "local" });
 }
 
-const browserNames = ["chromium", "firefox", "webkit"];
+const browserNames = ["chromium"];
 if (process.env.DREAM_SKIP_BROWSER === "1") {
   reports.push({
     name: "browser",
     status: "skipped",
     code: 2,
     reason: "DREAM_SKIP_BROWSER=1",
-    installCommand: "bunx playwright install chromium firefox webkit",
+    installCommand: "bunx playwright install chromium",
   });
   failures.push("browser");
 } else {
@@ -160,7 +113,7 @@ if (process.env.DREAM_SKIP_BROWSER === "1") {
       code: 2,
       reason: "browser-missing",
       missing,
-      installCommand: "bunx playwright install chromium firefox webkit",
+      installCommand: "bunx playwright install chromium",
     });
     failures.push("browser");
   } else if (

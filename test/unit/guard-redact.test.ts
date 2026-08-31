@@ -1,36 +1,83 @@
+import { spawnSync } from "node:child_process";
 import { describe, expect, it } from "vitest";
+import { assertNeonTestBranch } from "../../scripts/assert-neon-test-branch.mjs";
 import { redact } from "../../scripts/lib/redact.mjs";
 import {
   HERMETIC_STRIPPED_ENV_KEYS,
   createHermeticEnv,
 } from "../../scripts/lib/child-process.mjs";
-import { validateInjectedBranch } from "../../scripts/assert-neon-test-branch.mjs";
-import { resolveNeonBranch } from "../../scripts/neon-provider.mjs";
+
+const pooled =
+  "postgresql://alice:secret@ep-test-123-pooler.c-123.us-east-2.aws.neon.tech/dreamlining?sslmode=require&channel_binding=require";
+const direct =
+  "postgresql://alice:secret@ep-test-123.c-123.us-east-2.aws.neon.tech/dreamlining?channel_binding=require&sslmode=require";
 
 describe("guard, redaction, and hermetic process primitives", () => {
-  it("accepts only a non-default injected branch in pure mode", () => {
+  it("accepts a feature branch and returns only safe URL identities", () => {
     expect(
-      validateInjectedBranch({
-        NEON_BRANCH: "codex-local",
-        NEON_BRANCH_ID: "br-child",
-        NEON_DEFAULT_BRANCH_ID: "br-default",
-        NEON_BRANCH_IS_DEFAULT: "false",
+      assertNeonTestBranch({
+        env: {
+          DATABASE_URL: pooled,
+          DATABASE_URL_UNPOOLED: direct,
+          NEON_BRANCH: "codex-local",
+        },
       }),
-    ).toMatchObject({ source: "injected" });
+    ).toMatchObject({
+      label: "codex-local",
+      pooled: { endpointId: "ep-test-123" },
+    });
+  });
+
+  it.each(["production", "MAIN", "Master", " default "])(
+    "rejects default-like branch label %s",
+    (label) => {
+      expect(() =>
+        assertNeonTestBranch({
+          env: {
+            DATABASE_URL: pooled,
+            DATABASE_URL_UNPOOLED: direct,
+            NEON_BRANCH: label,
+          },
+        }),
+      ).toThrow();
+    },
+  );
+
+  it("rejects blank branch labels, wrong URL roles, and mismatched pairs", () => {
     expect(() =>
-      validateInjectedBranch({
-        NEON_BRANCH: "production",
-        NEON_BRANCH_ID: "br",
-        NEON_DEFAULT_BRANCH_ID: "def",
-        NEON_BRANCH_IS_DEFAULT: "false",
+      assertNeonTestBranch({
+        env: {
+          DATABASE_URL: pooled,
+          DATABASE_URL_UNPOOLED: direct,
+          NEON_BRANCH: " ",
+        },
       }),
     ).toThrow();
     expect(() =>
-      validateInjectedBranch({
-        NEON_BRANCH: "local",
-        NEON_BRANCH_ID: "def",
-        NEON_DEFAULT_BRANCH_ID: "def",
-        NEON_BRANCH_IS_DEFAULT: "false",
+      assertNeonTestBranch({
+        env: {
+          DATABASE_URL: direct,
+          DATABASE_URL_UNPOOLED: pooled,
+          NEON_BRANCH: "feature",
+        },
+      }),
+    ).toThrow();
+    expect(() =>
+      assertNeonTestBranch({
+        env: {
+          DATABASE_URL: pooled,
+          DATABASE_URL_UNPOOLED: direct.replace("dreamlining", "other"),
+          NEON_BRANCH: "feature",
+        },
+      }),
+    ).toThrow();
+    expect(() =>
+      assertNeonTestBranch({
+        env: {
+          DATABASE_URL: pooled,
+          DATABASE_URL_UNPOOLED: direct.replace("ep-test-123.", "ep-other."),
+          NEON_BRANCH: "feature",
+        },
       }),
     ).toThrow();
   });
@@ -48,73 +95,29 @@ describe("guard, redaction, and hermetic process primitives", () => {
       expect(env).not.toHaveProperty(key);
     expect(
       redact(
-        `child says sentinel-secret and postgres://user:password@host/db`,
+        "child says sentinel-secret and postgres://user:password@host/db",
         ["sentinel-secret"],
       ),
     ).not.toContain("sentinel-secret");
     expect(
-      redact(`child says sentinel-secret and postgres://user:password@host/db`),
+      redact("child says sentinel-secret and postgres://user:password@host/db"),
     ).not.toContain("password@host");
   });
 
-  it("resolves provider metadata with header-only authentication", async () => {
-    let requestUrl = "";
-    let requestInit: RequestInit | undefined;
-    const response = await resolveNeonBranch({
-      projectId: "project",
-      branchName: "codex-local",
-      apiKey: "sentinel-api-key",
-      pooledHost: "ep-test-pooler.c-123.us-east-2.aws.neon.tech",
-      directHost: "ep-test.c-123.us-east-2.aws.neon.tech",
-      apiBaseUrl: undefined,
-      fetchImpl: async (url: string | URL | Request, init?: RequestInit) => {
-        requestUrl = String(url);
-        requestInit = init;
-        return new Response(
-          JSON.stringify({
-            branches: [
-              {
-                id: "br-default",
-                name: "production",
-                current_state: "ready",
-                is_default: true,
-              },
-              {
-                id: "br-child",
-                name: "codex-local",
-                current_state: "ready",
-                is_default: false,
-                endpoints: [
-                  {
-                    id: "ep-pooler-record",
-                    host: "ep-test-pooler.c-123.us-east-2.aws.neon.tech",
-                    branch_id: "br-child",
-                  },
-                  {
-                    id: "ep-direct-record",
-                    host: "ep-test.c-123.us-east-2.aws.neon.tech",
-                    branch_id: "br-child",
-                  },
-                ],
-              },
-            ],
-          }),
-          { status: 200, headers: { "content-type": "application/json" } },
-        );
+  it("does not spawn Drizzle when the migration guard rejects", () => {
+    const result = spawnSync("bun", ["scripts/db-migrate.mjs"], {
+      cwd: process.cwd(),
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        DATABASE_URL: pooled,
+        DATABASE_URL_UNPOOLED: direct,
+        NEON_BRANCH: "production",
       },
     });
-    expect(requestUrl).toBe(
-      "https://console.neon.tech/api/v2/projects/project/branches",
+    expect(result.status).not.toBe(0);
+    expect(`${result.stdout}\n${result.stderr}`).not.toMatch(
+      /drizzle-kit|migration started/i,
     );
-    expect(requestInit?.headers).toMatchObject({
-      Authorization: "Bearer sentinel-api-key",
-    });
-    expect(JSON.stringify(response)).not.toContain("sentinel-api-key");
-    expect(response.branch).toEqual({
-      projectId: "project",
-      branchId: "br-child",
-      isDefault: false,
-    });
-    expect(response.defaultBranchId).toBe("br-default");
   });
 });

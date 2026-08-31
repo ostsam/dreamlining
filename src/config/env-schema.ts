@@ -15,15 +15,7 @@ export type DatabaseAppEnv = {
 export type MigrationAppEnv = {
   databaseUrlUnpooled: string;
   databaseIdentity: NeonConnectionIdentity;
-  neonBranch?: string;
-  neonBranchSource: "provider" | "injected";
-  neonProjectId?: string;
-  neonApiKey?: string;
-  neonBranchId?: string;
-  neonDefaultBranchId?: string;
-  neonBranchIsDefault?: boolean;
-  neonPooledEndpointId?: string;
-  neonDirectEndpointId?: string;
+  neonBranch: string;
 };
 
 export type FullAppEnv = DatabaseAppEnv & {
@@ -61,48 +53,16 @@ export function readMigrationEnv(
   env: Environment = process.env,
 ): MigrationAppEnv {
   const databaseUrlUnpooled = required(env, "DATABASE_URL_UNPOOLED");
+  const neonBranch = required(env, "NEON_BRANCH");
   const databaseIdentity = parseNeonConnectionUrl(
     databaseUrlUnpooled,
     "direct",
   );
-  const source =
-    env.NEON_BRANCH_SOURCE === "injected" ? "injected" : "provider";
-  const result: MigrationAppEnv = {
+  return {
     databaseUrlUnpooled,
     databaseIdentity,
-    neonBranch: env.NEON_BRANCH,
-    neonBranchSource: source,
-    neonProjectId: env.NEON_PROJECT_ID,
-    neonApiKey: env.NEON_API_KEY,
-    neonBranchId: env.NEON_BRANCH_ID,
-    neonDefaultBranchId: env.NEON_DEFAULT_BRANCH_ID,
-    neonBranchIsDefault:
-      env.NEON_BRANCH_IS_DEFAULT === undefined
-        ? undefined
-        : env.NEON_BRANCH_IS_DEFAULT === "true",
-    neonPooledEndpointId: env.NEON_POOLED_ENDPOINT_ID,
-    neonDirectEndpointId: env.NEON_DIRECT_ENDPOINT_ID,
+    neonBranch,
   };
-
-  if (source === "injected") {
-    if (
-      !result.neonBranch ||
-      !result.neonProjectId ||
-      !result.neonBranchId ||
-      !result.neonDefaultBranchId
-    ) {
-      throw new Error("Injected migration metadata is incomplete");
-    }
-    if (result.neonBranchIsDefault !== false) {
-      throw new Error(
-        "Injected migration metadata must explicitly set NEON_BRANCH_IS_DEFAULT=false",
-      );
-    }
-    if (!result.neonPooledEndpointId || !result.neonDirectEndpointId) {
-      throw new Error("Injected migration endpoint metadata is incomplete");
-    }
-  }
-  return result;
 }
 
 export function readFullAppEnv(env: Environment = process.env): FullAppEnv {

@@ -5,7 +5,6 @@ import {
   readMigrationEnv,
 } from "../../src/config/env-schema";
 import {
-  assertNeonEndpointPair,
   assertNeonUrlPair,
   parseNeonConnectionUrl,
 } from "../../src/config/neon-url";
@@ -26,7 +25,6 @@ describe("scoped environment readers", () => {
     const result = readMigrationEnv({
       DATABASE_URL_UNPOOLED: direct,
       NEON_BRANCH: "codex-local",
-      NEON_BRANCH_SOURCE: "provider",
     });
     expect(result.databaseIdentity.kind).toBe("direct");
   });
@@ -85,49 +83,12 @@ describe("Neon URL and endpoint invariants", () => {
     ).toThrow();
   });
 
-  it("rejects mismatched endpoint, database, project, branch, and default metadata", () => {
+  it("rejects mismatched endpoint and database", () => {
     expect(() =>
       assertNeonUrlPair(pooled, direct.replace("ep-test-123.", "ep-other.")),
     ).toThrow();
     expect(() =>
       assertNeonUrlPair(pooled, direct.replace("dreamlining", "other")),
-    ).toThrow();
-    const identity = {
-      projectId: "project",
-      branchId: "branch",
-      endpointId: "ep-test-123",
-      isDefault: false,
-    };
-    expect(
-      assertNeonEndpointPair(pooled, direct, {
-        pooled: identity,
-        direct: { ...identity },
-      }).databaseName,
-    ).toBe("dreamlining");
-    expect(() =>
-      assertNeonEndpointPair(pooled, direct, {
-        pooled: identity,
-        direct: { ...identity, projectId: "other" },
-      }),
-    ).toThrow();
-    expect(() =>
-      assertNeonEndpointPair(pooled, direct, {
-        pooled: identity,
-        direct: { ...identity, branchId: "other" },
-      }),
-    ).toThrow();
-    expect(() =>
-      assertNeonEndpointPair(pooled, direct, {
-        pooled: { ...identity, isDefault: true },
-        direct: identity,
-      }),
-    ).toThrow();
-    expect(() =>
-      assertNeonEndpointPair(pooled, direct, {
-        pooled: identity,
-        direct: identity,
-        defaultBranchId: "branch",
-      }),
     ).toThrow();
   });
 });

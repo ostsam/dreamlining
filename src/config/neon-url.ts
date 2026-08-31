@@ -7,14 +7,6 @@ export type NeonConnectionIdentity = {
   databaseName: string;
 };
 
-export type NeonEndpointIdentity = {
-  projectId: string;
-  branchId: string;
-  endpointId: string;
-  isDefault: boolean;
-  databaseName?: string;
-};
-
 const endpointLabel = /^ep-[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const tokenizedQuery = new Set(["channel_binding", "sslmode"]);
 
@@ -121,80 +113,6 @@ export function assertNeonUrlPair(
     fail("pooled and direct database names do not match");
   }
   return { pooled, direct };
-}
-
-function assertIdentityShape(
-  identity: NeonEndpointIdentity | undefined,
-  role: NeonUrlKind,
-  parsed: NeonConnectionIdentity,
-): asserts identity is NeonEndpointIdentity {
-  if (!identity) fail(`${role} endpoint metadata is unresolved`);
-  if (
-    !identity.projectId ||
-    !identity.branchId ||
-    !identity.endpointId ||
-    typeof identity.isDefault !== "boolean"
-  ) {
-    fail(`${role} endpoint metadata is incomplete`);
-  }
-  if (identity.endpointId !== parsed.endpointId) {
-    fail(`${role} endpoint metadata does not own the URL endpoint`);
-  }
-  if (
-    identity.databaseName !== undefined &&
-    identity.databaseName !== parsed.databaseName
-  ) {
-    fail(`${role} endpoint database name does not match the URL`);
-  }
-}
-
-/**
- * Verify provider-resolved endpoint records before an I/O-capable operation.
- * Callers must obtain the records from the authenticated provider resolver;
- * injected records are intentionally just a pure-test seam.
- */
-export function assertNeonEndpointPair(
-  pooledValue: string,
-  directValue: string,
-  identities: {
-    pooled?: NeonEndpointIdentity;
-    direct?: NeonEndpointIdentity;
-    defaultBranchId?: string;
-  },
-): {
-  pooled: NeonEndpointIdentity;
-  direct: NeonEndpointIdentity;
-  databaseName: string;
-} {
-  const urls = assertNeonUrlPair(pooledValue, directValue);
-  assertIdentityShape(identities.pooled, "pooled", urls.pooled);
-  assertIdentityShape(identities.direct, "direct", urls.direct);
-
-  if (identities.pooled.projectId !== identities.direct.projectId) {
-    fail("pooled and direct endpoints resolve to different projects");
-  }
-  if (identities.pooled.branchId !== identities.direct.branchId) {
-    fail("pooled and direct endpoints resolve to different branches");
-  }
-  if (identities.pooled.isDefault || identities.direct.isDefault) {
-    fail("default branches are not valid test targets");
-  }
-  if (
-    identities.defaultBranchId &&
-    (identities.pooled.branchId === identities.defaultBranchId ||
-      identities.direct.branchId === identities.defaultBranchId)
-  ) {
-    fail("endpoint branch is the provider default branch");
-  }
-  if (identities.pooled.endpointId !== identities.direct.endpointId) {
-    fail("pooled and direct metadata endpoint IDs do not match");
-  }
-
-  return {
-    pooled: identities.pooled,
-    direct: identities.direct,
-    databaseName: urls.pooled.databaseName,
-  };
 }
 
 export function parseHttpOrigin(value: string): string {
