@@ -53,4 +53,5 @@ does not claim the later domain behavior is implemented.
 Foundation command evidence is recorded in the DREAM-8 Lattice handoff
 comment. Provider and browser evidence is intentionally explicit: absent
 provider opt-in is skipped; missing browser binaries are failed with an
-install command; `DREAM_SKIP_BROWSER=1` is a non-passing skip.
+install command (`bunx playwright install chromium webkit`); `DREAM_SKIP_BROWSER=1`
+is a non-passing skip.

@@ -84,14 +84,15 @@ if (providerOptIn && !failures.includes("neon-preflight")) {
   await record("db-migrate", migration, { branchResolution: "local" });
 }
 
-const browserNames = ["chromium"];
+const browserNames = ["chromium", "webkit"];
+const browserInstallCommand = "bunx playwright install chromium webkit";
 if (process.env.DREAM_SKIP_BROWSER === "1") {
   reports.push({
     name: "browser",
     status: "skipped",
     code: 2,
     reason: "DREAM_SKIP_BROWSER=1",
-    installCommand: "bunx playwright install chromium",
+    installCommand: browserInstallCommand,
   });
   failures.push("browser");
 } else {
@@ -113,7 +114,7 @@ if (process.env.DREAM_SKIP_BROWSER === "1") {
       code: 2,
       reason: "browser-missing",
       missing,
-      installCommand: "bunx playwright install chromium",
+      installCommand: browserInstallCommand,
     });
     failures.push("browser");
   } else if (

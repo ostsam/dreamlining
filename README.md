@@ -66,7 +66,8 @@ deadline, bounded termination grace, and deterministic timeout status 124.
 
 The optional provider slot is `skipped` without explicit `DREAM_PROVIDER=neon`;
 with opt-in it runs the same local guard before any database work. The full
-browser slot checks Chromium. Missing browsers are a failed `browser-missing`
+browser slot checks Chromium and WebKit (desktop and iPhone 13 respectively).
+Missing browsers are a failed `browser-missing`
 slot with exit code 2 and:
 
 ```bash
