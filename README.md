@@ -71,7 +71,7 @@ Missing browsers are a failed `browser-missing`
 slot with exit code 2 and:
 
 ```bash
-bunx playwright install chromium
+bunx playwright install chromium webkit
 ```
 
 `DREAM_SKIP_BROWSER=1` is an explicit local escape hatch, but records a

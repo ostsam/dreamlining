@@ -46,3 +46,4 @@ next-env.d.ts
 
 # Local test output (redacted artifacts may be inspected locally)
 /artifacts/
+/test-results/
