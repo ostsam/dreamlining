@@ -9,8 +9,7 @@ export default defineConfig({
     alias: { "server-only": path.resolve("test/server-only.ts") },
   },
   test: {
-    environment: "jsdom",
-    setupFiles: ["./test/setup.ts"],
+    environment: "node",
     include: ["test/**/*.test.{ts,tsx}"],
     reporters: ["default"],
   },
