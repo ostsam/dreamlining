@@ -43,3 +43,6 @@ next-env.d.ts
 
 /.lattice/
 .neon
+
+# Local test output (redacted artifacts may be inspected locally)
+/artifacts/
