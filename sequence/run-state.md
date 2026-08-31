@@ -2,13 +2,22 @@
 
 ## Current position
 
-- Stage: `tone-prototype complete → tone-architect ready`
-- Phase: `binding prototype approved; architecture contract ready for final audit`
+- Stage: `tone-architect complete → build-contract approval`
+- Phase: `architecture contract codified; DREAM-7 adversarial/human gate pending`
 - Product hypothesis: a browser-based, facilitator-led session runner for a roughly 50-person social circle; participants may use phones or computers.
-- Current task: `DREAM-6`, after DREAM-4 closeout.
-- Next stage: finalize and approve the architecture contract through `DREAM-6` and `DREAM-7`.
+- Current task: `DREAM-7`, after DREAM-6 closeout.
+- Next stage: approve the contract and release `DREAM-8` as the first implementation task.
 - Visual register: product UI; welcoming, communal, lightly playful; pure-white canvas with indigo primary and coral invitation accents; WCAG 2.2 AA target.
-- `prototypes/01-roomboard.html` is the binding participant prototype; `04-admin-control-room.html` and `05-admin-login.html` are the binding facilitator surfaces. `DESIGN.md` is the binding visual/interaction contract. `EVALUATION.md`, `SPEC.md`, and `BUILDPLAN.md` await architecture closeout and the DREAM-7 build gate.
+- `prototypes/01-roomboard.html` is the binding participant prototype; `04-admin-control-room.html` and `05-admin-login.html` are the binding facilitator surfaces. `DESIGN.md` is the binding visual/interaction contract. `EVALUATION.md`, `SPEC.md`, and `BUILDPLAN.md` are architecture-complete and remain implementation-gated until DREAM-7 is done.
+
+## Architecture closeout
+
+- Next.js 16.3.3 runs on Node.js 20.9+; Edge runtime is excluded.
+- Neon Postgres uses pooled application traffic and direct Drizzle migrations through one server-only `pg` repository layer.
+- Feature/test work follows Neon branch-first development; provider tests must reject the default branch.
+- Two-second active polling, hashed participant bearer cookies, scrypt admin auth, AES-GCM contact encryption, idempotency receipts, and 30-day retention are binding.
+- Hosting stays provider-portable. DREAM-28 must obtain a human provider/cost/domain choice before provider-specific code or alerting.
+- Analytics are privacy-safe Postgres aggregates; notifications are in-app only; structured redacted logs and health endpoints are the initial monitoring contract.
 
 ## Problem statement
 

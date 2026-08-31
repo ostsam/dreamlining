@@ -1,31 +1,64 @@
 # Dreamlining build plan
 
-Status: working draft. The roomboard take is the working visual reference; the gallery and inbox takes remain alternatives until human-use selection. No implementation ticket may leave backlog before the build-contract gate is explicitly approved.
+Status: architecture-complete plan awaiting DREAM-7 approval. Roomboard plus Admin Login and Admin Control Room are binding; Gallery and Guided Inbox are non-binding pattern references. No implementation ticket may leave backlog before DREAM-7 is done.
 
 ## Architecture decisions
 
 ### Runtime and data
 
-Use Next.js App Router with server-rendered pages plus route handlers/server actions. Neon Postgres is the source of truth, accessed through a server-only repository layer. The working driver recommendation is `@neondatabase/serverless` with Drizzle ORM and Drizzle migrations.
+Use Next.js 16.3.3 App Router on Node.js 20.9+ with server-rendered pages plus route handlers/server actions. Neon Postgres is the source of truth, accessed through a server-only repository layer. Use Drizzle ORM/migrations with `pg`/node-postgres; do not introduce an Edge runtime or second database driver.
 
 - Pooled `DATABASE_URL`: application queries.
 - Direct `DATABASE_URL_UNPOOLED`: migrations and administrative tooling.
 - `NEON_BRANCH`: disposable test/preview branch identifier.
-- `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`, `CONTACT_ENCRYPTION_KEY`: server-only secrets.
+- `APP_ORIGIN`: participant join/QR origin.
+- `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`, `CONTACT_ENCRYPTION_KEY`, `MAINTENANCE_SECRET`: server-only secrets.
 
-Alternative: a document store would make session-scoped privacy, grants, reports, and distinct-commenter coverage harder to audit. Client-direct database access is rejected because it cannot safely enforce draft, private-comment, or contact boundaries.
+Each Git feature branch uses a disposable Neon child branch with a seven-day TTL. The foundation task must assert that migration/provider tests never target the default branch. A document store would make session-scoped privacy, grants, reports, and distinct-commenter coverage harder to audit. Client-direct database access is rejected because it cannot safely enforce draft, private-comment, or contact boundaries.
 
 ### Identity and admin
 
-Participants have no accounts. Join creates a random session token; only its hash is stored. The token is held in an HTTP-only, secure, same-site cookie, with a scoped resume link for a second device. `/admin` compares the shared password server-side and issues an expiring signed cookie. Generic `admin` is sufficient audit identity for a trusted local event of about 50 people.
+Participants have no accounts. Join creates a 256-bit random session token; only its SHA-256 hash is stored. The token is held in an HTTP-only, secure, same-site per-session cookie; cross-device identity transfer is not an MVP promise. `/admin` verifies a versioned scrypt password hash server-side and issues an expiring HMAC-signed cookie. Generic `admin` is sufficient audit identity for a trusted local event of about 50 people.
 
 ### Live updates
 
-Use two-second polling while a session is active, backing off when idle. This avoids separate realtime infrastructure and works across common serverless runtimes. Writes are transactional and idempotent. A future push transport is allowed only if it preserves the same state contract and privacy rules.
+Use two-second polling while a visible session is active, back off to ten seconds when idle, and refresh after writes/focus return. This avoids separate realtime infrastructure and works across Node hosts. Writes are transactional and idempotent. A future push transport is allowed only if it preserves the same state contract and privacy rules.
 
 ### Privacy and contact safety
 
-Store contact values encrypted with a server-only key. Do not return values until a `ContactGrant` matches requester, owner, method, session, and expiry. There is no directory, bulk export, search, or enumeration route. Private comments are readable only by their author and dreamline owner unless the recipient reports the thread; only then is the disclosed content returned to admin.
+Store contact values in versioned AES-256-GCM envelopes with random IVs and authenticated session/owner/method metadata. Do not return values until a `ContactGrant` matches requester, owner, method, session, and expiry. There is no directory, bulk export, search, or enumeration route. Private comments are readable only by their author and dreamline owner unless the recipient reports the thread; only then is the disclosed content returned to admin.
+
+### Hosting, analytics, notifications, and monitoring
+
+Keep the build provider-portable on a standard Next.js Node runtime. No hosting vendor is approved; DREAM-28 presents provider/cost/domain options to the human before adding provider-specific pool or alerting code. Analytics are privacy-safe Postgres aggregates only. Notifications are in-app polling only. Monitoring starts with structured redacted logs plus live/readiness endpoints; deployment-provider alerts are an operator action in DREAM-28.
+
+## Technical decision ledger
+
+| Area | Selected contract | Rejected/deferred | Reason / gate |
+|---|---|---|---|
+| Runtime | Next.js App Router, Node.js 20.9+ | Edge runtime | Edge is deprecated in bundled Next.js docs; Node supports `pg`, transactions, and built-in crypto. |
+| Persistence | Neon Postgres + Drizzle + `pg` | Document store, client-direct DB, second driver | Relational grants/privacy/coverage need auditable transactions and one repository boundary. |
+| Live state | 2s active / 10s idle polling | WebSocket/SSE vendor | A 50-person local event does not justify another service; state contract permits a later transport swap. |
+| Participant auth | Random per-session bearer cookie, no account | OAuth, email login, cross-device sync | Matches the client’s friction constraint; device choice does not require identity transfer. |
+| Admin auth | Shared scrypt password + signed expiring cookie | Multi-admin roles | Accepted by client for one trusted host/social circle. |
+| Contact secrecy | AES-GCM + per-requester grant | Plaintext values or contact directory | Enforces consent and prevents bulk leakage. |
+| Hosting | Provider-portable Node artifact | Choosing Vercel/Netlify/etc. now | Human vendor/cost/domain choice is explicitly deferred to DREAM-28. |
+| Analytics | Redacted Postgres aggregates | Third-party analytics SDK | Required fairness evidence without another data recipient. |
+| Notifications | In-app polling | Email/SMS/push | Client declared integrations non-load-bearing; avoids contact-channel leakage. |
+
+## Starter capability audit
+
+| Capability | State | Evidence / gap | Owning task |
+|---|---|---|---|
+| Standalone Git/agent worktree protocol | DONE | DREAM-5 verification docs, clean remote boundary, shared project-root Lattice protocol | DREAM-5 |
+| Next.js/Bun/TypeScript/Tailwind scaffold | DONE | Next 16.3.3 and Bun 1.3.4 are pinned; current lint/build pass. DREAM-8 must set `turbopack.root` to silence the recurring ignored parent-lockfile warning. | DREAM-8 maintains |
+| Binding product/design corpus | DONE | PRODUCT/PHILOSOPHY/DESIGN, Roomboard, two admin references, AC-1–AC-44 | DREAM-1/3/4 |
+| Neon project/config/env boundary | PARTIAL | Linked production branch, `neon.ts`, pooled/direct env split, read-only connectivity pass; app repository and branch test guard absent | DREAM-8/9 |
+| ORM/schema/migrations/factories | MISSING | No Drizzle/`pg`, schema, migration, or data factory exists | DREAM-8/9 |
+| Fast/full/router/security harness and CI | MISSING | Only lint/build scripts exist | DREAM-8/26 |
+| Participant/admin application routes | MISSING | Starter page only; prototypes are static evidence, not app code | DREAM-10 onward |
+| Auth, crypto, authorization, retention | MISSING | Contracted here, not implemented | DREAM-9/12/21/25/28 |
+| Structured logs, health, metrics, alerts | MISSING | No instrumentation yet; provider alerting intentionally waits for hosting choice | DREAM-13/28 |
 
 ## Delivery sequence
 
@@ -40,15 +73,15 @@ Store contact values encrypted with a server-only key. Do not return values unti
 
 ### Gate 1 — Foundation and walking skeleton
 
-7. **DREAM-8:** read the current Next.js guide; pin runtime/dependency conventions; add Neon driver, Drizzle, QR generation, validation, migrations, CI, factories, `bun run check`, `bun run test:full`, and `bun run build`.
+7. **DREAM-8:** read the current bundled Next.js guide; pin Node 20.9+ conventions; add `pg`, Drizzle, QR generation, env validation, migrations, CI, factories, `bun run check`, `bun run test:full`, `bun run test:router`, `bun run test:security`, and preserve `bun run build`.
 8. **DREAM-9:** implement canonical Neon schema and server-only repository layer for sessions, participants, dreamlines, comments, view history, reports, contacts, grants, commitments, and audit events. Enforce deny-by-default session isolation.
-9. **DREAM-10:** deliver a production-like skeleton: admin login → create session → QR join → two devices visible → one phase update → reconnect. Human drives phone and computer before feature breadth.
+9. **DREAM-10:** deliver a production-like skeleton: admin login → create session → QR join → two devices visible → one phase update → same-device reconnect. Human drives phone and computer before feature breadth.
 
 ### Gate 2 — State, identity, and observation
 
 10. **DREAM-11:** implement authoritative phase state machine, timers, readiness, immutable submission snapshot, close/reopen, expiry, and audit history.
 11. **DREAM-12:** implement join, duplicate-name handling, late join, resume token, reconnect, abandoned participant, closed session, and idempotent writes.
-12. **DREAM-13:** add privacy-safe structured logs, health/readiness, deployment markers, phase/coverage/commitment/recovery metrics, and redaction tests.
+12. **DREAM-13:** add privacy-safe structured JSON logs, request/deployment IDs, health/live and health/ready routes, phase/coverage/commitment/recovery metrics, and redaction tests; do not add an analytics vendor.
 
 ### Gate 3 — Parallel participant/admin/fairness lanes
 
@@ -77,7 +110,7 @@ These lanes may run in parallel only after the schema/state contracts are stable
 
 ### Gate 6 — Release, pilot, and closeout
 
-27. **DREAM-28:** configure production-like Neon branch, hosting, secrets, backups/restore, retention purge, health checks, rollback, domain/TLS, and facilitator fallback runbook.
+27. **DREAM-28:** present hosting/provider/cost/domain options for human selection, then configure the approved Node host, production-like Neon branch, secrets, backups/restore, retention purge, health/alerts, rollback, domain/TLS, and facilitator fallback runbook.
 28. **DREAM-29:** human release-candidate rehearsal using all felt/operator-assisted checks.
 29. **DREAM-30:** controlled live pilot with consenting participants and privacy-safe evidence for coverage, skips, dropouts, reconnects, reports, contact requests, and commitments.
 30. **DREAM-31:** resolve pilot findings through linked tickets and rerun proportionate regression/security/load checks.
@@ -88,7 +121,8 @@ These lanes may run in parallel only after the schema/state contracts are stable
 | Guardrail | Enforcement owner |
 |---|---|
 | `.lattice`, `.env*`, and secrets never staged | DREAM-5, DREAM-8, CI/release checks |
-| Server-only Neon/admin/contact secrets | DREAM-8, DREAM-9, DREAM-25 |
+| Server-only Neon/admin/contact/maintenance secrets | DREAM-8, DREAM-9, DREAM-25 |
+| Provider tests never target default/production Neon branch | DREAM-8, DREAM-26, DREAM-28 |
 | Session isolation and private draft/comment/contact authorization | DREAM-9, DREAM-17, DREAM-20, DREAM-21, DREAM-25 |
 | Open browsing without popularity/document-order bias | DREAM-16, DREAM-18, DREAM-24, DREAM-26 |
 | Idempotent writes and no loss on transitions | DREAM-11, DREAM-12, DREAM-23, DREAM-26 |
