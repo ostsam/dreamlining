@@ -96,7 +96,7 @@ These lanes may run in parallel only after the schema/state contracts are stable
 16. **DREAM-17:** build contribution composition on any submitted dreamline, response type, public-by-default checkbox, private thread, report action, retry, and accessible receipt. Do not imply assigned reviewers.
 17. **DREAM-18:** build browse-all exploration from submission visibility onward, neutral/personalized ordering, and private seen-without-comment history. The router nudges; it never gates access.
 18. **DREAM-19:** build one-scheme commitment with outcome, first action/date, help wanted, collaborators, edit/confirm, and closing-wall privacy.
-19. **DREAM-20:** build participant-scoped recap, approved contact presentation, expiry, export/share controls, and retention behavior.
+19. **DREAM-20:** build participant-scoped recap, approved contact presentation, expiry, revocation, browser print only when it preserves the authorized projection, and retention behavior; no bulk or cross-participant export.
 20. **DREAM-21:** build report-only private disclosure, moderation actions, consent language, rate/length limits, and redacted admin audit events.
 
 ### Gate 5 — Integration and hardening

@@ -2,13 +2,13 @@
 
 ## Current position
 
-- Stage: `tone-architect complete → build-contract approval`
-- Phase: `architecture contract codified; DREAM-7 adversarial/human gate pending`
+- Stage: `build contract approved → implementation ready`
+- Phase: `DREAM-7 gate passed; DREAM-8 is the first ready build task`
 - Product hypothesis: a browser-based, facilitator-led session runner for a roughly 50-person social circle; participants may use phones or computers.
-- Current task: `DREAM-7`, after DREAM-6 closeout.
-- Next stage: approve the contract and release `DREAM-8` as the first implementation task.
+- Current task: `DREAM-8` (unclaimed foundation task).
+- Next stage: foundation and quality harness, then the deployable walking skeleton.
 - Visual register: product UI; welcoming, communal, lightly playful; pure-white canvas with indigo primary and coral invitation accents; WCAG 2.2 AA target.
-- `prototypes/01-roomboard.html` is the binding participant prototype; `04-admin-control-room.html` and `05-admin-login.html` are the binding facilitator surfaces. `DESIGN.md` is the binding visual/interaction contract. `EVALUATION.md`, `SPEC.md`, and `BUILDPLAN.md` are architecture-complete and remain implementation-gated until DREAM-7 is done.
+- `prototypes/01-roomboard.html` is the binding participant prototype; `04-admin-control-room.html` and `05-admin-login.html` are the binding facilitator surfaces. `DESIGN.md`, `EVALUATION.md`, `SPEC.md`, and `BUILDPLAN.md` are binding. DREAM-7 authorizes build planning in dependency order.
 
 ## Architecture closeout
 

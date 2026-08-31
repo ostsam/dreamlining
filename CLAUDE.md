@@ -15,6 +15,7 @@ These are pointers to the living product-definition corpus. Read them before pro
 - [Evaluation contract](EVALUATION.md)
 - [Specification](SPEC.md)
 - [Build plan](BUILDPLAN.md)
+- [Agent build handoff](docs/AGENT_BUILD_HANDOFF.md)
 - [Agent worktree protocol](docs/AGENT_WORKTREE_PROTOCOL.md)
 
 ## Lattice
