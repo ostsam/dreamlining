@@ -2,13 +2,13 @@
 
 ## Current position
 
-- Stage: `tone-initiation → tone-prototype` (provisional exploration)
-- Phase: `4 — stories review / human approval; provisional prototype divergence prepared`
+- Stage: `tone-prototype complete → tone-architect ready`
+- Phase: `binding prototype approved; architecture contract ready for final audit`
 - Product hypothesis: a browser-based, facilitator-led session runner for a roughly 50-person social circle; participants may use phones or computers.
-- Current task: `DREAM-1`
-- Next stage: `tone-prototype`, after the client approves this product definition.
+- Current task: `DREAM-6`, after DREAM-4 closeout.
+- Next stage: finalize and approve the architecture contract through `DREAM-6` and `DREAM-7`.
 - Visual register: product UI; welcoming, communal, lightly playful; pure-white canvas with indigo primary and coral invitation accents; WCAG 2.2 AA target.
-- Working contract drafts now exist at `DESIGN.md`, `EVALUATION.md`, `SPEC.md`, and `BUILDPLAN.md`; they remain non-binding until the client selects/drives a visual direction and approves the architecture contract.
+- `prototypes/01-roomboard.html` is the binding participant prototype; `04-admin-control-room.html` and `05-admin-login.html` are the binding facilitator surfaces. `DESIGN.md` is the binding visual/interaction contract. `EVALUATION.md`, `SPEC.md`, and `BUILDPLAN.md` await architecture closeout and the DREAM-7 build gate.
 
 ## Problem statement
 
@@ -43,14 +43,14 @@ The event currently uses a shared Google Doc. The form is awkward, comments are 
 
 ## Touchpoints and handoff
 
-- Client approved the core open-browsing/adaptive-router direction, no-account entry, private comments only when reported, Neon, and the admin surface through dialogue on 2026-08-30.
-- Product-definition artifacts are being authored now. Client review is still required before `DREAM-1` can move to done and before `DREAM-3` prototype discovery starts.
-- Three participant prototype takes plus the admin control-room and admin-arrival boundary takes have been drafted under `prototypes/` to make the interaction assumptions tangible. They carry persistent `PROTOTYPE` labels and must not be treated as the binding design until the client reviews and chooses a direction.
-- Agent-seat interruption: implementation/research subagents hit the host usage limit. The orchestrator is completing synthesis locally; a fresh cold review remains an explicit follow-up gate.
+- Client approved the core open-browsing/adaptive-router direction, no-account entry, report-only private-comment disclosure, Neon persistence, and the admin surface through dialogue on 2026-08-30.
+- The client reviewed the redesigned prototype set, requested visual critique and in-app-browser verification, then instructed the session to continue. That instruction is recorded in Lattice as explicit approval to bind Roomboard.
+- Roomboard leads with event rhythm and a quiet balanced nudge without removing open browsing. Gallery and Guided Inbox remain pattern references only. Admin Login and Admin Control Room are binding companion states.
+- The client requested that no subagents be used. Lifecycle stages and review evidence are therefore separated within this session, and the reduced independence is recorded at each gate.
 
 ## Run stats
 
-- Human touchpoints: 5+ dialogue turns
-- Research agents attempted: 3 (interrupted by host usage limit)
-- Product implementation agent: interrupted by host usage limit
+- Human touchpoints: 10+ dialogue turns
+- Browser validation: Roomboard, Gallery, and Admin at desktop and mobile; post-convergence copy rechecked on Roomboard and Guided Inbox
+- Impeccable audit: detector clean after redesign; participant-count and assignment-like residuals removed during convergence
 - External integrations: none in initiation scope

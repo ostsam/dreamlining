@@ -4,7 +4,9 @@
 
 **A thoughtful host’s table:** crisp white surfaces, an ink-like indigo anchor, coral invitations, and small moments of citrus warmth. The visual language should feel made for this room—not like a generic project-management app.
 
-The working direction is the room-first prototype: the current phase and the next generous action lead; the gallery and guided queue remain supporting patterns. This is a design contract for the prototype round and remains subject to human-use iteration.
+The binding direction is the room-first prototype in `prototypes/01-roomboard.html`: the current phase and the next generous action lead, while open browsing and the participant’s private trail remain immediately available. `prototypes/04-admin-control-room.html` and `prototypes/05-admin-login.html` are the binding companion surfaces for the facilitator. The gallery and guided-inbox takes are non-binding pattern references only; builders must not reproduce them as alternate product shells.
+
+The client approved this direction after desktop and mobile in-app-browser review on 2026-08-30. Production implementation may refine mock copy and data density, but must preserve the information hierarchy, interaction promises, responsive behavior, and privacy/fairness boundaries in this document and the stable AC-1–AC-44 contract.
 
 ## Color tokens
 
